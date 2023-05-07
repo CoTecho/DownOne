@@ -1,0 +1,3 @@
+[submodule "tools/idm"]
+	path = tools/idm
+	url = https://github.com/muchang/mean-seed-app.git
