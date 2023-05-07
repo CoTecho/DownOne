@@ -49,7 +49,7 @@
 
             button.onclick = function (){
                 var id=document.getElementsByClassName('q-chip__content col row no-wrap items-center q-anchor--skip')[0].textContent.trim()
-                downloadImage('https://api.[SAMPLE.CO]/api/cover/'+id+'.jpg',id+'.jpg')
+                downloadImage('https://api.[SAMPLE.COM]/api/cover/'+id+'.jpg',id+'.jpg')
                 return;
             };
 
