@@ -6,3 +6,7 @@ Manage With Pyimgui
 `[SAMPLE.COM]`: WebSite
 
 `[SAMPLE.KEY]`: ID
+
+## Config Explaination
+
+``
