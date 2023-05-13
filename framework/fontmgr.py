@@ -14,8 +14,9 @@ SIMHEI_20 = 3
 
 FONTS_CONFIG = (
     (SIMHEI_16, "simhei.ttf", 16),
-    (SIMHEI_18, "simhei.ttf", 18),
-    (SIMHEI_20, "simhei.ttf", 20),
+    # TODO: Low Effective
+    # (SIMHEI_18, "simhei.ttf", 18),
+    # (SIMHEI_20, "simhei.ttf", 20),
 )
 
 

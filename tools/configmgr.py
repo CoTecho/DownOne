@@ -2,6 +2,8 @@
 from collections import OrderedDict
 from os import path
 
+WEB_URL = "WebUrl"
+
 
 def Load(sKey, oDefault=None):
     return GetMgr().Load(sKey, oDefault)

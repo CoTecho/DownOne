@@ -26,6 +26,10 @@ def Init():
     imgui.get_io().config_flags &= ~imgui.CONFIG_NO_MOUSE
     # 初始化字体管理器
     fontmgr.GetMgr().Init(impl)
+    # TODO: Use Slot
+    glfw.set_drop_callback(window, dropCB)
+def dropCB(*args):
+    print(args)
 
 
 def Loop():
@@ -38,8 +42,9 @@ def Loop():
     if imgui.get_io().want_capture_mouse:
         glfw.set_window_attrib(window, glfw.MOUSE_PASSTHROUGH, glfw.FALSE)
     else:
-        glfw.set_window_attrib(window, glfw.MOUSE_PASSTHROUGH, glfw.TRUE)
-
+        # TODO: Use Slot
+        #glfw.set_window_attrib(window, glfw.MOUSE_PASSTHROUGH, glfw.TRUE)
+        pass
     # 显示界面
     ui.Start(WINDOW_WIDTH, WINDOW_HEIGHT)
 
