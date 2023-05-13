@@ -7,8 +7,19 @@ imgui字体管理器
 from functools import wraps
 import imgui
 
-g_FontMgr = None
+# region 字体设置
+SIMHEI_16 = 1
+SIMHEI_18 = 2
+SIMHEI_20 = 3
 
+FONTS_CONFIG = (
+    (SIMHEI_16, "simhei.ttf", 16),
+    (SIMHEI_18, "simhei.ttf", 18),
+    (SIMHEI_20, "simhei.ttf", 20),
+)
+
+
+# endregion
 
 def SetFont(sFontName):
     """装饰UI函数，使用特定字体"""
@@ -25,6 +36,9 @@ def SetFont(sFontName):
         return wrapped
 
     return wrapper
+
+
+g_FontMgr = None
 
 
 def Clear():
@@ -51,6 +65,8 @@ class CFontMgr(object):
         assert hasattr(oImpl, "refresh_font_texture"), "Need a impl!"
         self.m_oImpl = oImpl
         self.m_oFonts = imgui.get_io().fonts
+        for config in FONTS_CONFIG:
+            self.Create(*config)
 
     def Create(self, sFontName, sFontPath, iFontSize=14, oRange=None):
         if not oRange:
