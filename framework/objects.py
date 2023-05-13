@@ -9,13 +9,15 @@ from framework import fontmgr
 
 @fontmgr.SetFont(fontmgr.SIMHEI_16)
 def ExitButton(dWidth, dHeight):
-    dButtonSize = (68, 25)
-    dSpaceSize = (2, 15)
+    tButtonSize = (68, 25)
+    tSpaceSize = (2, 15)
+    tOffset = (3, 8)
+
     imgui.set_next_window_bg_alpha(0)
     imgui.begin("Close", False,
                 imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_SCROLLBAR)
-    imgui.set_window_position(dWidth - dButtonSize[0] - dSpaceSize[0], 0)
-    imgui.set_window_size(dButtonSize[0] + dSpaceSize[0], dButtonSize[1] + dSpaceSize[1])
-    if imgui.button("关闭", *dButtonSize):
+    imgui.set_window_position(dWidth - tButtonSize[0] - tSpaceSize[0] + tOffset[0], 0 - tOffset[1])
+    imgui.set_window_size(tButtonSize[0] + tSpaceSize[0], tButtonSize[1] + tSpaceSize[1])
+    if imgui.button("关闭", *tButtonSize):
         sys.exit()
     imgui.end()
