@@ -7,9 +7,7 @@ from functools import wraps
 
 import imgui
 from framework import fontmgr
-from framework import slot
-
-g_TimesStore = {}  # 保存调用次数的装饰器
+from framework import memory
 
 
 def Once(oFunc):
@@ -17,16 +15,14 @@ def Once(oFunc):
 
     @wraps(oFunc)
     def wrapped(*args, **kwargs):
-        if oFunc not in g_TimesStore:
-            g_TimesStore[oFunc] = 1
+        dFuncRunTimes = memory.GetFuncRunTimes()
+        if oFunc not in dFuncRunTimes:
+            dFuncRunTimes[oFunc] = 1
             return oFunc(*args, **kwargs)
         else:
             return
 
     return wrapped
-
-
-g_MousePassThrough = True
 
 
 @fontmgr.SetFont(fontmgr.SIMHEI_16)
@@ -38,9 +34,9 @@ def ExitButton(dWidth, dHeight):
     imgui.set_next_window_bg_alpha(0)
     imgui.begin("Close", False,
                 imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_SCROLLBAR | imgui.WINDOW_ALWAYS_AUTO_RESIZE)
-    global g_MousePassThrough
     vec4ButtonColor = GetStyleColor(imgui.COLOR_BUTTON)
-    if g_MousePassThrough:
+    bPassthrough = memory.GetMousePassthrough()
+    if bPassthrough:
         vec4ButtonColor = list(vec4ButtonColor)
         vec4ButtonColor[0], vec4ButtonColor[1], vec4ButtonColor[2] = 1, 1, 0
         sLabel = "穿透中"
@@ -48,8 +44,8 @@ def ExitButton(dWidth, dHeight):
         sLabel = "非穿透"
     imgui.push_style_color(imgui.COLOR_BUTTON, *vec4ButtonColor)
     if imgui.button(sLabel, *tButtonSize):
-        g_MousePassThrough = not g_MousePassThrough
-        slot.CHANGE_WINDOW_PASS_THROUGH.Emit(g_MousePassThrough)
+        bPassthrough = not bPassthrough
+        memory.SetMousePassthrough(bPassthrough)
     imgui.pop_style_color()
 
     imgui.same_line()

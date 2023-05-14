@@ -8,6 +8,7 @@ import imgui
 import sys
 from framework import fontmgr
 from framework import slot
+from framework import memory
 import ui
 
 from typing import TYPE_CHECKING
@@ -26,6 +27,7 @@ def Init():
     imgui.get_io().config_flags &= ~imgui.CONFIG_NO_MOUSE
     # 初始化字体管理器
     fontmgr.GetMgr().Init(impl)
+    memory.Init()
     initCB()
 
 
@@ -33,19 +35,9 @@ def initCB():
     """初始化回调"""
     glfw.set_drop_callback(window, dropCB)
 
-    slot.CHANGE_WINDOW_PASS_THROUGH.Connect(mousePassThroughChange)
-
 
 def dropCB(window, fileList):
     slot.DRAG_FILE.Emit(fileList)
-
-
-g_IsMousePassThrough = True
-
-
-def mousePassThroughChange(bThrough):
-    global g_IsMousePassThrough
-    g_IsMousePassThrough = bThrough
 
 
 def Loop():
@@ -55,9 +47,9 @@ def Loop():
 
     imgui.new_frame()
 
-    if imgui.get_io().want_capture_mouse:
+    if not memory.GetMousePassthrough() or imgui.get_io().want_capture_mouse:
         glfw.set_window_attrib(window, glfw.MOUSE_PASSTHROUGH, glfw.FALSE)
-    elif g_IsMousePassThrough:
+    elif memory.GetMousePassthrough():
         glfw.set_window_attrib(window, glfw.MOUSE_PASSTHROUGH, glfw.TRUE)
     # 显示界面
     ui.Start(WINDOW_WIDTH, WINDOW_HEIGHT)

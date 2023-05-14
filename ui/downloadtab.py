@@ -115,7 +115,7 @@ def refreshTreeData():
     g_taskData = urltreemgr.GetMgr().ParseID(g_fileName)
     sTarget = g_workPath.joinpath(g_fileName)
     sTarget.mkdir(parents=True, exist_ok=True)
-    with open(str(g_workPath.joinpath(g_fileName, "{}.cache".format(g_fileName))), "w") as cacheFile:
+    with open(str(g_workPath.joinpath(g_fileName, "{}.cache".format(g_fileName))), "w", encoding="utf-8") as cacheFile:
         cacheFile.write(repr(g_taskData))
 
 

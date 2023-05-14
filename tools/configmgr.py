@@ -4,6 +4,7 @@ from os import path
 
 WEB_URL = "WebUrl"
 WORK_SPACE = "WorkSpace"
+MOUSE_PASSTHROUGH = "MousePassthrough"
 
 
 def Load(sKey, oDefault=None):
@@ -35,13 +36,13 @@ class CMgr(object):
     def _initConfig(self):
         try:
             # exist config file
-            with open(self.PATH) as oFile:
+            with open(self.PATH, encoding="utf-8") as oFile:
                 for sLine in oFile:
                     if sLine.strip():
                         sKey, sValue = sLine.split(" = ")
                         self.m_dConfig[sKey] = eval(sValue)
         except FileNotFoundError:
-            open(self.PATH, "w").close()
+            open(self.PATH, "w", encoding="utf-8").close()
             # TODO: Set Init Config
 
     def Load(self, sKey, oDefault=None):
@@ -50,7 +51,7 @@ class CMgr(object):
 
     def Save(self, sKey, oValue):
         self.m_dConfig[sKey] = oValue
-        with open(self.PATH, "w") as oFile:
+        with open(self.PATH, "w", encoding="utf-8") as oFile:
             sContext = ""
             for k, v in self.m_dConfig.items():
                 sContext += "{} = {}\n".format(k, repr(v))
