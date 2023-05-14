@@ -3,6 +3,7 @@ from collections import OrderedDict
 from os import path
 
 WEB_URL = "WebUrl"
+WORK_SPACE = "WorkSpace"
 
 
 def Load(sKey, oDefault=None):

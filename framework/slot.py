@@ -33,7 +33,7 @@ class CFunctor(object):
         lArgs = self.m_lArgs + args
         self.m_dKwargs.update(kwargs)
         oFunc = self.m_oRef()
-        if not oFunc:
+        if oFunc:
             return oFunc(*lArgs, **self.m_dKwargs)
 
 
