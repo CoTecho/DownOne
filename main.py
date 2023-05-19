@@ -37,7 +37,8 @@ def initCB():
 
 
 def dropCB(window, fileList):
-    slot.DRAG_FILE.Emit(fileList)
+    memory.DragFileList.SetData(fileList)
+    slot.DRAG_FILE.Emit()
 
 
 def Loop():
@@ -47,9 +48,9 @@ def Loop():
 
     imgui.new_frame()
 
-    if not memory.GetMousePassthrough() or imgui.get_io().want_capture_mouse:
+    if not memory.IsMousePassthrough.GetData() or imgui.get_io().want_capture_mouse:
         glfw.set_window_attrib(window, glfw.MOUSE_PASSTHROUGH, glfw.FALSE)
-    elif memory.GetMousePassthrough():
+    elif memory.IsMousePassthrough.GetData():
         glfw.set_window_attrib(window, glfw.MOUSE_PASSTHROUGH, glfw.TRUE)
     # 显示界面
     ui.Start(WINDOW_WIDTH, WINDOW_HEIGHT)

@@ -5,6 +5,7 @@ from collections import OrderedDict
 from framework import objects
 from framework import fontmgr
 from framework import slot
+from framework import memory
 from tools import idm
 from tools import urltreemgr
 from tools import configmgr
@@ -99,10 +100,11 @@ def initCB():
     slot.DRAG_FILE.Connect(dragFilesCB)
 
 
-def dragFilesCB(lFileList):
+def dragFilesCB():
     """TODO: 用另外窗口管理"""
     # 暂时抛弃其它的列表
     global g_FilePath, g_fileMoved
+    lFileList = memory.DragFileList.GetData()
     g_FilePath = pathlib.Path(lFileList[0])
     g_fileMoved = False
     refreshTreeData()

@@ -5,15 +5,24 @@ import inspect
 
 
 class CSlot(object):
+    """
+    信号类
+        传递的参数仅用来决定观察者的策略，数据由观察者自己拿
+    """
+
     def __init__(self):
         self.m_lConnectCB = []
+        self.m_bCycling = False  # 防循环信号标记
 
     def Connect(self, oFunc, *args, **kwargs):
         self.m_lConnectCB.append(CFunctor(oFunc, *args, **kwargs))
 
     def Emit(self, *args, **kwargs):
+        assert not self.m_bCycling, "Cycle Signal Error!"
+        self.m_bCycling = True
         for oFunc in self.m_lConnectCB:
             oFunc(*args, **kwargs)
+        self.m_bCycling = False
 
 
 class CFunctor(object):

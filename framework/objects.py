@@ -15,9 +15,8 @@ def Once(oFunc):
 
     @wraps(oFunc)
     def wrapped(*args, **kwargs):
-        dFuncRunTimes = memory.GetFuncRunTimes()
-        if oFunc not in dFuncRunTimes:
-            dFuncRunTimes[oFunc] = 1
+        if not memory.FuncTimesStore.GetFuncTimes(oFunc):
+            memory.FuncTimesStore.SetFuncUse(oFunc)
             return oFunc(*args, **kwargs)
         else:
             return
@@ -35,7 +34,7 @@ def ExitButton(dWidth, dHeight):
     imgui.begin("Close", False,
                 imgui.WINDOW_NO_MOVE | imgui.WINDOW_NO_TITLE_BAR | imgui.WINDOW_NO_RESIZE | imgui.WINDOW_NO_SCROLLBAR | imgui.WINDOW_ALWAYS_AUTO_RESIZE)
     vec4ButtonColor = GetStyleColor(imgui.COLOR_BUTTON)
-    bPassthrough = memory.GetMousePassthrough()
+    bPassthrough = memory.IsMousePassthrough.GetData()
     if bPassthrough:
         vec4ButtonColor = list(vec4ButtonColor)
         vec4ButtonColor[0], vec4ButtonColor[1], vec4ButtonColor[2] = 1, 1, 0
@@ -45,7 +44,7 @@ def ExitButton(dWidth, dHeight):
     imgui.push_style_color(imgui.COLOR_BUTTON, *vec4ButtonColor)
     if imgui.button(sLabel, *tButtonSize):
         bPassthrough = not bPassthrough
-        memory.SetMousePassthrough(bPassthrough)
+        memory.IsMousePassthrough.SetData(bPassthrough)
     imgui.pop_style_color()
 
     imgui.same_line()
