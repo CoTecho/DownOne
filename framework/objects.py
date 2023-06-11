@@ -8,6 +8,7 @@ from functools import wraps
 import imgui
 from framework import fontmgr
 from framework import memory
+from tools import configmgr
 
 
 def Once(oFunc):
@@ -45,6 +46,7 @@ def ExitButton(dWidth, dHeight):
     if imgui.button(sLabel, *tButtonSize):
         bPassthrough = not bPassthrough
         memory.IsMousePassthrough.SetData(bPassthrough)
+        configmgr.Save(configmgr.MOUSE_PASSTHROUGH, bPassthrough)
     imgui.pop_style_color()
 
     imgui.same_line()
@@ -102,3 +104,27 @@ def PushID(iID):
 
 def PopID():
     return imgui.pop_id()
+
+
+def OpenPopup(sLabel, iFlag=0):
+    return imgui.open_popup(sLabel, iFlag)
+
+
+def BeginPopup(sLabel, iFlag=0):
+    return imgui.begin_popup(sLabel, iFlag)
+
+
+def EndPopup():
+    return imgui.end_popup()
+
+
+def IsItemHovered(iFlag=0):
+    return imgui.is_item_hovered(iFlag)
+
+
+def CloseCurrentPopup():
+    return imgui.close_current_popup()
+
+
+def IsWindowHovered(iFlag=0):
+    return imgui.is_window_hovered(iFlag)

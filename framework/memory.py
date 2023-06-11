@@ -41,6 +41,49 @@ class _CTimeStore(_CBaseStorage):
         self.m_oData = None
 
 
+class _CDragFileStore(_CBaseStorage):
+    def __init__(self, oDefault=None):
+        if oDefault is None:
+            oDefault = set()
+        super().__init__(oDefault)
+
+
+class _CSelectDirStore(_CBaseStorage):
+    def __init__(self, oDefault=None):
+        if oDefault is None:
+            oDefault = set()
+        super().__init__(oDefault)
+
+    def SelectDir(self, oPath):
+        self.m_oData.add(oPath)
+        print(self.m_oData)
+
+    def IsDirSelected(self, oPath):
+        return oPath in self.m_oData
+
+    def UnselectDir(self, oPath):
+        if oPath in self.m_oData:
+            self.m_oData.remove(oPath)
+
+
+class _CFileInfoStore(_CBaseStorage):
+    def __init__(self, oDefault=None):
+        if oDefault is None:
+            oDefault = {}
+        super().__init__(oDefault)
+
+    def GetInfo(self, sID):
+        return self.m_oData.get(sID, {})
+
+    def SetInfo(self, sID, dInfo):
+        self.m_oData[sID] = dInfo
+
+    def GetSortedList(self, sKey="id", bReverse=False):
+        lRes = self.m_oData.keys()
+        lRes = sorted(lRes, key=lambda k: self.m_oData[k][sKey], reverse=bReverse)
+        return lRes
+
+
 # region 全局运行
 IsMousePassthrough = _CStorage(True)
 FuncTimesStore = _CTimeStore({})
@@ -50,6 +93,10 @@ FuncTimesStore = _CTimeStore({})
 
 # region 各窗口共享
 DragFileList = _CStorage([])
+
+SelectDirList = _CSelectDirStore()
+
+FileInfoDict = _CFileInfoStore()
 
 
 # endregion

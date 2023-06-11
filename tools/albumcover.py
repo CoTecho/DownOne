@@ -31,3 +31,13 @@ def AutoAddCover(path):
 
             # 将临时文件重命名为原始文件
             temp_output_path.rename(file_path)
+
+
+def IsMusicHasCover(filename):
+    cmd = ['ffmpeg', '-i', str(filename)]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    output = result.stdout
+
+    if 'Stream #0:1' in output and 'covr' in output:
+        return True
+    return False

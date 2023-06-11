@@ -1,10 +1,11 @@
 # -*- coding: UTF-8 -*-
-from collections import OrderedDict
-from os import path
+from collections import OrderedDict as _dict
+from os import path as _path
 
 WEB_URL = "WebUrl"
-WORK_SPACE = "WorkSpace"
+MEDIA_BASE = "MediaBase"
 MOUSE_PASSTHROUGH = "MousePassthrough"
+MEDIA_BASE_IN_PHONE = "MediaBaseInPhone"
 
 
 def Load(sKey, oDefault=None):
@@ -16,21 +17,21 @@ def Save(sKey, oValue):
 
 
 CONFIG_PATH = "config.ini"
-g_Mgr = None
+_Mgr = None
 
 
 def GetMgr():
-    global g_Mgr
-    if not g_Mgr:
-        g_Mgr = CMgr()
-    return g_Mgr
+    global _Mgr
+    if not _Mgr:
+        _Mgr = _CMgr()
+    return _Mgr
 
 
-class CMgr(object):
-    PATH = path.abspath(CONFIG_PATH)
+class _CMgr(object):
+    PATH = _path.abspath(CONFIG_PATH)
 
     def __init__(self):
-        self.m_dConfig = OrderedDict()
+        self.m_dConfig = _dict()
         self._initConfig()
 
     def _initConfig(self):

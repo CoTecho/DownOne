@@ -16,7 +16,7 @@ g_fileMoved = False
 
 g_taskData = []
 
-g_workPath = pathlib.Path(configmgr.Load(configmgr.WORK_SPACE, '.'))
+MEDIA_BASE = pathlib.Path(configmgr.Load(configmgr.MEDIA_BASE, '.'))
 
 
 @fontmgr.SetFont(fontmgr.SIMHEI_16)
@@ -30,7 +30,7 @@ def ShowMainTab():
         objects.Text(g_fileName)
         if objects.Button("下载"):
             lDownloadDict = getDownloadDict()
-            idm.DownloadUrlList(lDownloadDict, str(g_workPath.joinpath(g_fileName)))
+            idm.DownloadUrlList(lDownloadDict, str(MEDIA_BASE.joinpath(g_fileName)))
             moveTaskFile()
 
         ShowFileTree(g_taskData)
@@ -115,9 +115,10 @@ def refreshTreeData():
     g_fileName = g_FilePath.name
     g_fileName = g_fileName[:g_fileName.rfind('.')]
     g_taskData = urltreemgr.GetMgr().ParseID(g_fileName)
-    sTarget = g_workPath.joinpath(g_fileName)
+    # TODO: 缓存不在这里
+    sTarget = MEDIA_BASE.joinpath(g_fileName)
     sTarget.mkdir(parents=True, exist_ok=True)
-    with open(str(g_workPath.joinpath(g_fileName, "{}.cache".format(g_fileName))), "w", encoding="utf-8") as cacheFile:
+    with open(str(MEDIA_BASE.joinpath(g_fileName, "{}.cache".format(g_fileName))), "w", encoding="utf-8") as cacheFile:
         cacheFile.write(repr(g_taskData))
 
 
@@ -125,5 +126,5 @@ def moveTaskFile():
     global g_fileMoved
     if g_fileMoved:
         return
-    g_FilePath.replace(g_workPath.joinpath(g_fileName, g_FilePath.name))
+    g_FilePath.replace(MEDIA_BASE.joinpath(g_fileName, g_FilePath.name))
     g_fileMoved = True
