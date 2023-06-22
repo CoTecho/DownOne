@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """ChatGPT生成的一段修改封面的代码"""
+import re
 from pathlib import Path
 import subprocess
 
@@ -13,8 +14,15 @@ def AutoAddCover(path):
     # 循环处理文件夹中的每个MP3文件
     for file_path in folder_path.glob('*'):
         if file_path.is_file() and file_path.suffix in audio_ext:
+            bHasCover = IsMusicHasCover(file_path)
+            if bHasCover:
+                continue
+
             # 构造封面文件路径
             cover_path = folder_path.joinpath(folder_path.name + jpg_ext)
+            if not cover_path.is_file():
+                print("{}不存在封面".format(folder_path.name))
+                return
             # 构造临时文件路径
             temp_output_path = file_path.with_suffix('.temp' + file_path.suffix)
 
@@ -35,9 +43,10 @@ def AutoAddCover(path):
 
 def IsMusicHasCover(filename):
     cmd = ['ffmpeg', '-i', str(filename)]
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    output = result.stdout
+    result = subprocess.run(cmd, capture_output=True)
+    output = result.stdout.decode("utf-8") + result.stderr.decode("utf-8")
 
-    if 'Stream #0:1' in output and 'covr' in output:
+    pattern = r'Metadata:\s+title\s+:\s+"Album cover"'
+    if re.search(pattern, output):
         return True
     return False
