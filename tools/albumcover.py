@@ -22,7 +22,7 @@ def AutoAddCover(path):
             cover_path = folder_path.joinpath(folder_path.name + jpg_ext)
             if not cover_path.is_file():
                 print("{}不存在封面".format(folder_path.name))
-                return
+                return False
             # 构造临时文件路径
             temp_output_path = file_path.with_suffix('.temp' + file_path.suffix)
 
@@ -39,6 +39,7 @@ def AutoAddCover(path):
 
             # 将临时文件重命名为原始文件
             temp_output_path.rename(file_path)
+    return True
 
 
 def IsMusicHasCover(filename):

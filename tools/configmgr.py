@@ -6,6 +6,7 @@ WEB_URL = "WebUrl"
 MEDIA_BASE = "MediaBase"
 MOUSE_PASSTHROUGH = "MousePassthrough"
 MEDIA_BASE_IN_PHONE = "MediaBaseInPhone"
+LRC_BASE = "LrcBase"
 
 
 def Load(sKey, oDefault=None):

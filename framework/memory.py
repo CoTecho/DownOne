@@ -79,6 +79,7 @@ class _CFileInfoStore(_CBaseStorage):
         self.m_oData[sID] = dInfo
 
     def GetSortedList(self, sKey="id", bReverse=False):
+        """排序sID"""
         lRes = self.m_oData.keys()
         lRes = sorted(lRes, key=lambda k: self.m_oData[k][sKey], reverse=bReverse)
         return lRes

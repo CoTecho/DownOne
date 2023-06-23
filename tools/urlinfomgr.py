@@ -26,7 +26,6 @@ class CUrlInfoMgr(object):
     def __init__(self):
         self.m_sWebUrl = ""
         self.m_sFolderPath = Path(".")
-        self.m_sCacheFile = Path(".")
 
     def Init(self, sWebUrl, sFolderPath):
         self.m_sWebUrl = sWebUrl
@@ -36,11 +35,11 @@ class CUrlInfoMgr(object):
         """
         @return: url Tree
         """
-        self.m_sCacheFile = Path(self.m_sFolderPath.joinpath(sID, "{}.info".format(sID)))
+        sCacheFile = Path(self.m_sFolderPath.joinpath(sID, "{}.info".format(sID)))
         sID = re.findall(r'\d+', sID)[0]
         jsonDict = {}
         try:
-            with open(self.m_sCacheFile, encoding="utf-8") as f:
+            with open(sCacheFile, encoding="utf-8") as f:
                 jsonDict = eval(f.read())
         except FileNotFoundError:
             print("缓存不存在")
@@ -65,6 +64,12 @@ class CUrlInfoMgr(object):
         res = requests.get(url)
         jsonDict = json.loads(res.content.decode("utf-8"))
         jsonDict["_UpdateData"] = time.time()
-        with open(self.m_sCacheFile, "w", encoding="utf-8") as f:
-            f.write(repr(jsonDict))
+        self.SaveInfo(sID, jsonDict)
         return jsonDict
+
+    def SaveInfo(self, sID, dFileInfo):
+        """保存文件字典"""
+        sCacheFile = Path(self.m_sFolderPath.joinpath(sID, "{}.info".format(sID)))
+        with open(sCacheFile, "w", encoding="utf-8") as f:
+            f.write(repr(dFileInfo))
+        return dFileInfo
